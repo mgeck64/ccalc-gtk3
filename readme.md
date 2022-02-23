@@ -19,7 +19,7 @@ in the include search path; e.g., /usr/local/include/ccalc.
 library) are assumed to be discoverable in the lib path; e.g., located in
 /usr/local/lib.
 
-This project also depends on gtkmm-4.0 for the GUI frontend.
+This project also depends on gtkmm-3 for the GUI frontend.
 
 This project also depends on Boost because ccalc-lib does so; see ccalc-lib for
 details.
