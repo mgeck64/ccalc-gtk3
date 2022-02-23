@@ -7,7 +7,6 @@ namespace pt = boost::property_tree;
 settings_storage::settings_storage(Gtk::Window &parent_win) :
     error_msg(parent_win, "", /*use_markup*/ false, Gtk::MessageType::MESSAGE_ERROR, Gtk::ButtonsType::BUTTONS_OK, /*modal*/ true)
 {
-    //FOO error_msg.set_hide_on_close(true);
     error_msg.signal_response().connect(sigc::hide(sigc::mem_fun(error_msg, &Gtk::Widget::hide)));
 }
 
