@@ -304,7 +304,7 @@ auto main_window::on_clear_result_btn_clicked() -> void {
     expr_entry.set_text(Glib::ustring());
     result_lbl.set_label(Glib::ustring());
     last_result_kind = none_kind;
-    resize(1, 1); // actually resizes to minimum width/height
+    resize(1, 1); // actually, resizes to minimum width/height
     expr_entry.grab_focus_without_selecting();
 }
 
