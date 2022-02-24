@@ -64,7 +64,7 @@ main_window::main_window(gcalc_app& app_) :
 
     add(win_vbox);
 
-    win_vbox.pack_start(content_vbox, Gtk::PackOptions::PACK_SHRINK);
+    win_vbox.pack_start(content_vbox);
     set_margin(content_vbox, default_margin);
 
     content_vbox.pack_start(expr_hbox, Gtk::PackOptions::PACK_SHRINK);
@@ -81,7 +81,7 @@ main_window::main_window(gcalc_app& app_) :
     expr_btn_lbl.set_markup("<big>=</big>");
     // putting the label in the button this way instead of in the ctor that
     // takes a string causes the button to have smaller width, which we want;
-    // also we can use markup to set the label
+    // also we can use markup in the label text
 
     expr_btn.signal_clicked().connect(sigc::mem_fun(*this, &main_window::on_expr_btn_clicked));
 
@@ -89,7 +89,6 @@ main_window::main_window(gcalc_app& app_) :
     set_margin(result_frame, default_margin);
     result_frame.add(result_vbox);
     result_vbox.pack_start(result_lbl);
-    result_lbl.set_vexpand(true);
     set_margin(result_lbl, default_margin);
     result_lbl.set_halign(Gtk::Align::ALIGN_START);
     result_lbl.set_valign(Gtk::Align::ALIGN_START);
@@ -97,7 +96,7 @@ main_window::main_window(gcalc_app& app_) :
     result_lbl.set_line_wrap(true);
     result_lbl.set_line_wrap_mode(Pango::WrapMode::WRAP_WORD_CHAR);
 
-    content_vbox.pack_start(in_out_info_hbox);
+    content_vbox.pack_start(in_out_info_hbox, Gtk::PackOptions::PACK_SHRINK);
     in_out_info_hbox.pack_start(in_info_lbl, Gtk::PackOptions::PACK_SHRINK);
     in_out_info_hbox.pack_end(out_info_lbl, Gtk::PackOptions::PACK_SHRINK);
     set_margin(in_info_lbl, default_margin);
