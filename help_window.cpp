@@ -229,7 +229,7 @@ settings.\n\
 \n\
 A note about entering hexadecimal numbers: A number that starts with a letter \
 digit, e.g., f0e0, must be entered with a leading zero, e,g,, 0f0e0, otherwise \
-it will be interpreted to be an identifier (variable name).";
+it will be interpreted as being an identifier (variable name).";
 
 const char input_output_information_area_txt[] = "\
 The input/output information area near the bottom of the main window displays \
@@ -373,8 +373,8 @@ This describes the Settings window for entering application settings.\n\
 \n\
 <b>Input Defaults:</b>\n\
 \n\
-These listboxes specify the default representation type (left listbox) and \
-numeric base (right listbox) to interpret numeric input in. Representation \
+These two listboxes specify the default representation type (left listbox) and \
+numeric base (right listbox) in which to interpret numeric input. Representation \
 types and numeric bases are described in the Representation Types and Numeric \
 Bases topic. The default defaults are complex type and decimal base.\n\
 \n\
