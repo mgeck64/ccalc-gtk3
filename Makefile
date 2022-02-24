@@ -19,7 +19,7 @@ CPPSRCS = $(wildcard *.cpp)
 CSRCS = $(wildcard *.c)
 OBJS = $(CPPSRCS:.cpp=.o) $(CSRCS:.c=.o)
 EXE = gcalc
-DESKTOPNANE = com.github.mgeck64.GCalc.desktop
+DESKTOPNANE = com.github.mgeck64.ccalc-gtk3.GCalc.desktop
 
 #
 # Debug build settings
