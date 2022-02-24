@@ -47,7 +47,7 @@ DESKTOPDIR = $(PREFIX)/share/applications
 .PHONY: all clean debug release remake dbglink rellink install uninstall
 
 # Default build
-all: install
+all: release
 
 #
 # Debug rules
