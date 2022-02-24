@@ -32,7 +32,7 @@ main_window::main_window(gcalc_app& app_) :
     header_bar.pack_start(clear_result_hbox);
     clear_result_hbox.pack_start(clear_result_btn);
     clear_result_btn.add(clear_result_lbl);
-    clear_result_lbl.set_markup("<b>\u2a02</b>");
+    clear_result_lbl.set_markup("<small>CLR</small>");
     clear_result_btn.set_tooltip_text("Clear Expression and Result");
     clear_result_btn.signal_clicked().connect(sigc::mem_fun(*this, &main_window::on_clear_result_btn_clicked));
 
