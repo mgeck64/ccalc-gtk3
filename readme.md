@@ -10,6 +10,11 @@ interface with a modest screen footprint.
 floating point (and complex)
 - Supports floating point numbers with 100 decimal significant digits (+ guard
 digits)
+## Development Notes
+This project, developed for gtkmm-3, was originally developed for gtkmm-4 but it
+is having issues with Gtk 4 (still new) so I ported it to work with Gtk 3. This
+was developed under Manjaro 21.2, Gnome edition; basic functionality has been
+tested on all other editions of Manjaro 21.2 and on Ubuntu 21.10. (2/25/22)
 ## Dependencies
 This project depends on another of my projects, ccalc-lib; that project provides
 the backend to this project's GUI frontend.
