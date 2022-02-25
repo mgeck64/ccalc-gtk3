@@ -32,15 +32,16 @@ details.
 
 This project has GNU extensions to C++ enabled because ccalc-lib does so.
 ## Build Quick Help
-- 'make' or 'make install' builds the release executable as described below for
+- 'make' builds the release executable as described below for 'make release'
+- 'make install' builds the release executable as described below for
 'make release', and then
-    - installs the executable under /usr/bin
-    - installs the .desktop file under /usr/share/applications
+    - installs the executable to /usr/bin
+    - installs the .desktop file to /usr/share/applications
 - 'make debug' builds the debug executable in a "debug" directory under the
 current working directory
 - 'make release' builds the release executable in a "release" directory under
 the current working directory
 - 'make uninstall'
-    - deletes the execuable from /usr/bin
+    - deletes the executable from /usr/bin
     - deletes the .desktop file from /usr/share/applications
 - The makefile provides more make targets and options; peruse it for details
