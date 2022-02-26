@@ -107,12 +107,11 @@ main_window::main_window(gcalc_app& app_) :
     win_vbox.pack_start(menus_hbox, Gtk::PackOptions::PACK_SHRINK);
 
     {
-        auto functions_action_group = Gio::SimpleActionGroup::create();
-        insert_action_group("functions", functions_action_group);
-
-        auto add_action = [&](Gio::Menu& menu, const char* label, const char* action, const char* full_action) {
-            functions_action_group->add_action(action, sigc::bind(sigc::mem_fun(*this, &main_window::on_function_action), label));
-            menu.append(label, full_action);
+        auto add_action = [&](Gtk::Menu& menu, Gtk::MenuItem& item, const char* label) {
+            item.set_label(label);
+            menu.append(item);
+            item.signal_activate().connect(sigc::bind(sigc::mem_fun(*this, &main_window::on_function_activate), label));
+            item.show();
         };
 
         menus_hbox.pack_start(functions_a_btn);
@@ -121,22 +120,20 @@ main_window::main_window(gcalc_app& app_) :
         set_margin(functions_a_btn, 0);
         functions_a_btn.set_hexpand(true);
         functions_a_btn.set_use_underline(true);
+        functions_a_btn.set_popup(functions_a_menu);
     
-        auto functions_a_menu = Gio::Menu::create();
-        functions_a_btn.set_menu_model(functions_a_menu);
-
-        add_action(*functions_a_menu.get(), "exp() - e raised to the argument's power", "exp", "functions.exp");
-        add_action(*functions_a_menu.get(), "ln() - Natural (base e) log", "ln", "functions.ln");
-        add_action(*functions_a_menu.get(), "log10() - Base 10 log", "log10", "functions.log10");
-        add_action(*functions_a_menu.get(), "log2() - Base 2 log", "log2", "functions.log2");
-        add_action(*functions_a_menu.get(), "sqrt() - Square root", "sqrt", "functions.sqrt");
-        add_action(*functions_a_menu.get(), "cbrt() - Cubic root", "cbrt", "functions.cbrt");
-        add_action(*functions_a_menu.get(), "gamma() - Gamma function", "gamma", "functions.gamma");
-        add_action(*functions_a_menu.get(), "lgamma() - Log gamma function", "lgamma", "functions.lgamma");
-        add_action(*functions_a_menu.get(), "arg() - Phase angle", "arg", "functions.arg");
-        add_action(*functions_a_menu.get(), "norm() - Squared magnitude", "norm", "functions.norm");
-        add_action(*functions_a_menu.get(), "conj() - Conjugate", "conj", "functions.conj");
-        add_action(*functions_a_menu.get(), "proj() - Projection onto the Riemann sphere", "proj", "functions.proj");
+        add_action(functions_a_menu, exp_item, "exp() - e raised to the argument's power");
+        add_action(functions_a_menu, ln_item, "ln() - Natural (base e) log");
+        add_action(functions_a_menu, log10_item, "log10() - Base 10 log");
+        add_action(functions_a_menu, log2_item, "log2() - Base 2 log");
+        add_action(functions_a_menu, sqrt_item, "sqrt() - Square root");
+        add_action(functions_a_menu, cbrt_item, "cbrt() - Cubic root");
+        add_action(functions_a_menu, gamma_item, "gamma() - Gamma function");
+        add_action(functions_a_menu, lgamma_item, "lgamma() - Log gamma function");
+        add_action(functions_a_menu, arg_item, "arg() - Phase angle");
+        add_action(functions_a_menu, norm_item, "norm() - Squared magnitude");
+        add_action(functions_a_menu, conj_item, "conj() - Conjugate");
+        add_action(functions_a_menu, proj_item, "proj() - Projection onto the Riemann sphere");
 
         menus_hbox.pack_start(functions_b_btn);
         functions_b_btn.set_label("_Trig");
@@ -144,22 +141,20 @@ main_window::main_window(gcalc_app& app_) :
         functions_b_btn.set_tooltip_text("Trigonometric Functons");
         functions_b_btn.set_hexpand(true);
         functions_b_btn.set_use_underline(true);
+        functions_b_btn.set_popup(functions_b_menu);
 
-        auto functions_b_menu = Gio::Menu::create();
-        functions_b_btn.set_menu_model(functions_b_menu);
-    
-        add_action(*functions_b_menu.get(), "sin() - Sine", "sin", "functions.sin");
-        add_action(*functions_b_menu.get(), "cos() - Cosine", "cos", "functions.cos");
-        add_action(*functions_b_menu.get(), "tan() - Tangent", "tan", "functions.tan");
-        add_action(*functions_b_menu.get(), "asin() - Arc sin", "asin", "functions.asin");
-        add_action(*functions_b_menu.get(), "acos() - Arc cos", "acos", "functions.acos");
-        add_action(*functions_b_menu.get(), "atan() - Arc tan", "atan", "functions.atan");
-        add_action(*functions_b_menu.get(), "sinh() - Hyperbolic sin", "sinh", "functions.sinh");
-        add_action(*functions_b_menu.get(), "cosh() - Hyperbolic cos", "cosh", "functions.cosh");
-        add_action(*functions_b_menu.get(), "tanh() - Hyperbolic tan", "tanh", "functions.tanh");
-        add_action(*functions_b_menu.get(), "asinh() - Inverse hyperbolic sin", "asinh", "functions.asinh");
-        add_action(*functions_b_menu.get(), "acosh() - Inverse hyperbolic cos", "acosh", "functions.acosh");
-        add_action(*functions_b_menu.get(), "atanh() - Inverse hyperbolic tan", "atanh", "functions.atanh");
+        add_action(functions_b_menu, sin_item, "sin() - Sine");
+        add_action(functions_b_menu, cos_item, "cos() - Cosine");
+        add_action(functions_b_menu, tan_item, "tan() - Tangent");
+        add_action(functions_b_menu, asin_item, "asin() - Arc sin");
+        add_action(functions_b_menu, acos_item, "acos() - Arc cos");
+        add_action(functions_b_menu, atan_item, "atan() - Arc tan");
+        add_action(functions_b_menu, sinh_item, "sinh() - Hyperbolic sin");
+        add_action(functions_b_menu, cosh_item, "cosh() - Hyperbolic cos");
+        add_action(functions_b_menu, tanh_item, "tanh() - Hyperbolic tan");
+        add_action(functions_b_menu, asinh_item, "asinh() - Inverse hyperbolic sin");
+        add_action(functions_b_menu, acosh_item, "acosh() - Inverse hyperbolic cos");
+        add_action(functions_b_menu, atanh_item, "atanh() - Inverse hyperbolic tan");
     }
 
     menus_hbox.pack_start(settings_btn);
@@ -313,7 +308,7 @@ auto main_window::on_expr_btn_clicked() -> void {
     expr_entry.grab_focus_without_selecting();
 }
 
-auto main_window::on_function_action(const char* label) -> void {
+auto main_window::on_function_activate(const char* label) -> void {
     std::string_view text = label;
     auto rparen_pos = text.find(')');
     if (rparen_pos != decltype(text)::npos) {

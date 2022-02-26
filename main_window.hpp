@@ -56,6 +56,34 @@ private:
     Gtk::MenuButton functions_b_btn;
     Gtk::Button settings_btn;
 
+    Gtk::Menu functions_a_menu;
+    Gtk::MenuItem exp_item;
+    Gtk::MenuItem ln_item;
+    Gtk::MenuItem log10_item;
+    Gtk::MenuItem log2_item;
+    Gtk::MenuItem sqrt_item;
+    Gtk::MenuItem cbrt_item;
+    Gtk::MenuItem gamma_item;
+    Gtk::MenuItem lgamma_item;
+    Gtk::MenuItem arg_item;
+    Gtk::MenuItem norm_item;
+    Gtk::MenuItem conj_item;
+    Gtk::MenuItem proj_item;
+
+    Gtk::Menu functions_b_menu;
+    Gtk::MenuItem sin_item;
+    Gtk::MenuItem cos_item;
+    Gtk::MenuItem tan_item;
+    Gtk::MenuItem asin_item;
+    Gtk::MenuItem acos_item;
+    Gtk::MenuItem atan_item;
+    Gtk::MenuItem sinh_item;
+    Gtk::MenuItem cosh_item;
+    Gtk::MenuItem tanh_item;
+    Gtk::MenuItem asinh_item;
+    Gtk::MenuItem acosh_item;
+    Gtk::MenuItem atanh_item;
+
     settings_storage settings_storager;
 
     auto show_input_info() -> void;
@@ -65,7 +93,7 @@ private:
     auto on_clear_result_btn_clicked() -> void;
     auto on_expr_entry_key_pressed(GdkEventKey* key) -> bool;
     auto on_expr_btn_clicked() -> void;
-    auto on_function_action(const char* label) -> void;
+    auto on_function_activate(const char* label) -> void;
     auto on_settings_btn_clicked() -> void;
     auto on_variables_btn_clicked() -> void;
     auto on_help_btn_clicked() -> void;
