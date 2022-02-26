@@ -15,7 +15,7 @@ This project, developed for Gtk 3 (gtkmm-3), was originally developed for
 Gtk 4 (gtkmm-4) but that version is having issues related to Gtk 4 (still new)
 so I ported it to work with the more stable Gtk 3 (gtkmm-3). This was developed
 under Manjaro 21.2, Gnome edition; basic functionality has been tested on all
-other editions of Manjaro 21.2 and on Ubuntu 21.10. (2/25/22)
+other editions of Manjaro 21.2 and on Ubuntu 21.10. (Written on 2/25/22.)
 ## Dependencies
 This project depends on another of my projects, ccalc-lib; that project provides
 the backend to this project's GUI frontend.
