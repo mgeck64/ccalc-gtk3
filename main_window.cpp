@@ -299,7 +299,10 @@ auto main_window::on_clear_result_btn_clicked() -> void {
     expr_entry.set_text(Glib::ustring());
     result_lbl.set_label(Glib::ustring());
     last_result_kind = none_kind;
-    resize(1, 1); // actually, resizes to minimum width/height
+
+    resize(1, 1); // actually, resizes to minimum width/height; see also
+    // https://gitlab.gnome.org/GNOME/gtkmm/-/issues/112
+
     expr_entry.grab_focus_without_selecting();
 }
 
@@ -471,7 +474,9 @@ auto main_window::on_hide() -> void {
     // won't be unhidden, and either the app is closing or the help window is
     // being displayed and the app will be closed when the help window is
     // closed. for consistency's sake, we apply this logic to the other windows.
-    // sigh
+    // sigh. note: in gtkmm 4, this was handled in on_close_request, in which
+    // deleting the windows caused no problem, but on_close_request is
+    // unavailable in gtkmm 3
 
     auto p_variables_win = variables_win.release();
     auto p_settings_win = settings_win.release();
