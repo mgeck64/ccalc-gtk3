@@ -460,9 +460,30 @@ auto main_window::update_if_options_changed(const output_options& new_out_option
 }
 
 auto main_window::on_hide() -> void {
-    variables_win.reset();
-    settings_win.reset();
-    about_dlg.reset();
+    //variables_win.reset();
+    //settings_win.reset();
+    //about_dlg.reset();
+
+    // for unknown reason, destroying the settings window here, or allowing it
+    // to be destroyed after this event, causes a segfault. this is frustrating.
+    // thus we release the pointer here, hide the window, and let the pointer
+    // dangle; this seems to work ok and should be ok since the main window
+    // won't be unhidden, and either the app is closing or the help window is
+    // being displayed and the app will be closed when the help window is
+    // closed. for consistency's sake, we apply this logic to the other windows.
+    // sigh
+
+    auto p_variables_win = variables_win.release();
+    auto p_settings_win = settings_win.release();
+    auto p_about_dlg = about_dlg.release();
+
+    if (p_variables_win)
+        p_variables_win->hide();
+    if (p_settings_win)
+        p_settings_win->hide();
+    if (p_about_dlg)
+        p_about_dlg->hide();
+
     Gtk::Window::on_hide();
 }
 
