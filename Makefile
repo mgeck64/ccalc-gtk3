@@ -98,8 +98,8 @@ $(RELDIR)/%.o: %.c
 #
 
 install: make_reldir $(RELDIR)/$(EXE)
-	install -D $(RELDIR)/$(EXE) $(DESTDIR)$(PREFIX)/bin/$(EXE)
-	install -D $(DESKTOPNANE) $(DESTDIR)$(DESKTOPDIR)/$(DESKTOPNANE)
+	install -D -m755 $(RELDIR)/$(EXE) $(DESTDIR)$(PREFIX)/bin/$(EXE)
+	install -D -m644 $(DESKTOPNANE) $(DESTDIR)$(DESKTOPDIR)/$(DESKTOPNANE)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(EXE)
