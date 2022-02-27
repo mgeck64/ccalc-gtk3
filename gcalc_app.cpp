@@ -24,7 +24,6 @@ auto gcalc_app::on_activate() -> void {
 }
 
 auto gcalc_app::on_help_hide() -> void {
-    std::cout << "gcalc_app::on_help_hide" << std::endl;
     if (help_win)
         remove_window(*help_win);
     help_win.reset();
