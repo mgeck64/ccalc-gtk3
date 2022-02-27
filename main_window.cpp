@@ -368,7 +368,7 @@ auto main_window::on_about_btn_clicked() -> void {
         about_dlg->set_version(app_version);
         about_dlg->set_copyright(app_copyright);
         about_dlg->set_comments("An advanced text-based calculator");
-        about_dlg->set_website("https://github.com/mgeck64/ccalc-gtk");
+        about_dlg->set_website("https://github.com/mgeck64/ccalc-gtk3");
         about_dlg->set_license_type(Gtk::License::LICENSE_GPL_3_0);
 
         Glib::OptionGroup::vecustrings authors;
