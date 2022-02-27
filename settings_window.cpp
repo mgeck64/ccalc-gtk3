@@ -6,8 +6,6 @@
 
 #include <giomm/simpleactiongroup.h>
 
-static constexpr auto division_top_margin = default_margin * 4;
-
 settings_window::settings_window(gcalc_app& app_, main_window& main_win_) :
     app(app_),
     main_win(main_win_),
@@ -29,7 +27,7 @@ settings_window::settings_window(gcalc_app& app_, main_window& main_win_) :
 
     content_vbox.pack_start(settings_grid);
     set_margin(settings_grid, default_margin);
-    settings_grid.set_row_spacing(division_top_margin);
+    settings_grid.set_row_spacing(default_margin * 4);
     settings_grid.set_column_spacing(default_margin);
 
     settings_grid.attach(input_defaults_vbox, 1, 1, 2, 1);
