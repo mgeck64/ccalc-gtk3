@@ -107,7 +107,7 @@ main_window::main_window(gcalc_app& app_) :
     win_vbox.pack_start(menus_hbox, Gtk::PackOptions::PACK_SHRINK);
 
     {
-        auto add_action = [&](Gtk::Menu& menu, Gtk::MenuItem& item, const char* label) {
+        auto append = [&](Gtk::Menu& menu, Gtk::MenuItem& item, const char* label) {
             item.set_label(label);
             menu.append(item);
             item.signal_activate().connect(sigc::bind(sigc::mem_fun(*this, &main_window::on_function_activate), label));
@@ -122,18 +122,18 @@ main_window::main_window(gcalc_app& app_) :
         functions_a_btn.set_use_underline(true);
         functions_a_btn.set_popup(functions_a_menu);
     
-        add_action(functions_a_menu, exp_item, "exp() - e raised to the argument's power");
-        add_action(functions_a_menu, ln_item, "ln() - Natural (base e) log");
-        add_action(functions_a_menu, log10_item, "log10() - Base 10 log");
-        add_action(functions_a_menu, log2_item, "log2() - Base 2 log");
-        add_action(functions_a_menu, sqrt_item, "sqrt() - Square root");
-        add_action(functions_a_menu, cbrt_item, "cbrt() - Cubic root");
-        add_action(functions_a_menu, gamma_item, "gamma() - Gamma function");
-        add_action(functions_a_menu, lgamma_item, "lgamma() - Log gamma function");
-        add_action(functions_a_menu, arg_item, "arg() - Phase angle");
-        add_action(functions_a_menu, norm_item, "norm() - Squared magnitude");
-        add_action(functions_a_menu, conj_item, "conj() - Conjugate");
-        add_action(functions_a_menu, proj_item, "proj() - Projection onto the Riemann sphere");
+        append(functions_a_menu, exp_item, "exp() - e raised to the argument's power");
+        append(functions_a_menu, ln_item, "ln() - Natural (base e) log");
+        append(functions_a_menu, log10_item, "log10() - Base 10 log");
+        append(functions_a_menu, log2_item, "log2() - Base 2 log");
+        append(functions_a_menu, sqrt_item, "sqrt() - Square root");
+        append(functions_a_menu, cbrt_item, "cbrt() - Cubic root");
+        append(functions_a_menu, gamma_item, "gamma() - Gamma function");
+        append(functions_a_menu, lgamma_item, "lgamma() - Log gamma function");
+        append(functions_a_menu, arg_item, "arg() - Phase angle");
+        append(functions_a_menu, norm_item, "norm() - Squared magnitude");
+        append(functions_a_menu, conj_item, "conj() - Conjugate");
+        append(functions_a_menu, proj_item, "proj() - Projection onto the Riemann sphere");
 
         menus_hbox.pack_start(functions_b_btn);
         functions_b_btn.set_label("_Trig");
@@ -143,18 +143,18 @@ main_window::main_window(gcalc_app& app_) :
         functions_b_btn.set_use_underline(true);
         functions_b_btn.set_popup(functions_b_menu);
 
-        add_action(functions_b_menu, sin_item, "sin() - Sine");
-        add_action(functions_b_menu, cos_item, "cos() - Cosine");
-        add_action(functions_b_menu, tan_item, "tan() - Tangent");
-        add_action(functions_b_menu, asin_item, "asin() - Arc sin");
-        add_action(functions_b_menu, acos_item, "acos() - Arc cos");
-        add_action(functions_b_menu, atan_item, "atan() - Arc tan");
-        add_action(functions_b_menu, sinh_item, "sinh() - Hyperbolic sin");
-        add_action(functions_b_menu, cosh_item, "cosh() - Hyperbolic cos");
-        add_action(functions_b_menu, tanh_item, "tanh() - Hyperbolic tan");
-        add_action(functions_b_menu, asinh_item, "asinh() - Inverse hyperbolic sin");
-        add_action(functions_b_menu, acosh_item, "acosh() - Inverse hyperbolic cos");
-        add_action(functions_b_menu, atanh_item, "atanh() - Inverse hyperbolic tan");
+        append(functions_b_menu, sin_item, "sin() - Sine");
+        append(functions_b_menu, cos_item, "cos() - Cosine");
+        append(functions_b_menu, tan_item, "tan() - Tangent");
+        append(functions_b_menu, asin_item, "asin() - Arc sin");
+        append(functions_b_menu, acos_item, "acos() - Arc cos");
+        append(functions_b_menu, atan_item, "atan() - Arc tan");
+        append(functions_b_menu, sinh_item, "sinh() - Hyperbolic sin");
+        append(functions_b_menu, cosh_item, "cosh() - Hyperbolic cos");
+        append(functions_b_menu, tanh_item, "tanh() - Hyperbolic tan");
+        append(functions_b_menu, asinh_item, "asinh() - Inverse hyperbolic sin");
+        append(functions_b_menu, acosh_item, "acosh() - Inverse hyperbolic cos");
+        append(functions_b_menu, atanh_item, "atanh() - Inverse hyperbolic tan");
     }
 
     menus_hbox.pack_start(settings_btn);
