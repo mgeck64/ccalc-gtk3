@@ -9,7 +9,6 @@
 #include "ccalc/calc_outputter.hpp"
 
 #include <giomm/simpleactiongroup.h>
-#include <giomm/menu.h>
 
 main_window::main_window(gcalc_app& app_) :
     app{app_},
@@ -107,6 +106,10 @@ main_window::main_window(gcalc_app& app_) :
     win_vbox.pack_start(menus_hbox, Gtk::PackOptions::PACK_SHRINK);
 
     {
+        // note: the popup menus set up here were originally implemented using
+        // Gio::Menu but the popovers were being rendered clipped in Manjaro KDE
+        // and XFCE
+
         auto append = [&](Gtk::Menu& menu, Gtk::MenuItem& item, const char* label) {
             item.set_label(label);
             menu.append(item);
