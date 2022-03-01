@@ -3,7 +3,6 @@
 #include "gcalc_basics.hpp"
 #include "help_window.hpp"
 #include "settings_window.hpp"
-#include "variables_window.hpp"
 
 #include "ccalc/calc_parse_error.hpp"
 #include "ccalc/calc_outputter.hpp"
@@ -15,7 +14,7 @@ main_window::main_window(gcalc_app& app_) :
     win_vbox(Gtk::Orientation::ORIENTATION_VERTICAL),
     content_vbox(Gtk::Orientation::ORIENTATION_VERTICAL),
     expr_hbox(Gtk::Orientation::ORIENTATION_HORIZONTAL),
-    result_vbox(Gtk::Orientation::ORIENTATION_VERTICAL),
+    variables_space(Gtk::Orientation::ORIENTATION_VERTICAL),
     in_out_info_hbox(Gtk::Orientation::ORIENTATION_HORIZONTAL),
     menus_hbox(Gtk::Orientation::ORIENTATION_HORIZONTAL),
     settings_btn("_Settings"),
@@ -84,16 +83,28 @@ main_window::main_window(gcalc_app& app_) :
 
     expr_btn.signal_clicked().connect(sigc::mem_fun(*this, &main_window::on_expr_btn_clicked));
 
-    content_vbox.pack_start(result_frame);
+    content_vbox.pack_start(result_frame, Gtk::PackOptions::PACK_SHRINK);
     set_margin(result_frame, default_margin);
-    result_frame.add(result_vbox);
-    result_vbox.pack_start(result_lbl);
+    result_frame.add(result_lbl);
     set_margin(result_lbl, default_margin);
     result_lbl.set_halign(Gtk::Align::ALIGN_START);
     result_lbl.set_valign(Gtk::Align::ALIGN_START);
     result_lbl.set_selectable(true);
     result_lbl.set_line_wrap(true);
     result_lbl.set_line_wrap_mode(Pango::WrapMode::WRAP_WORD_CHAR);
+
+    content_vbox.pack_start(variables_space);
+    variables_space.pack_start(variables_frame);
+    variables_frame.add(variables_scroller);
+    variables_scroller.add(variables_lbl);
+    variables_scroller.set_min_content_height(100);
+    set_margin(variables_frame, default_margin);
+    set_margin(variables_lbl, default_margin);
+    variables_lbl.set_halign(Gtk::Align::ALIGN_START);
+    variables_lbl.set_valign(Gtk::Align::ALIGN_START);
+    variables_lbl.set_selectable(true);
+    variables_lbl.set_line_wrap(true);
+    variables_lbl.set_line_wrap_mode(Pango::WrapMode::WRAP_WORD_CHAR);
 
     content_vbox.pack_start(in_out_info_hbox, Gtk::PackOptions::PACK_SHRINK);
     in_out_info_hbox.pack_start(in_info_lbl, Gtk::PackOptions::PACK_SHRINK);
@@ -178,8 +189,11 @@ main_window::main_window(gcalc_app& app_) :
     expr_btn.show();
     expr_btn_lbl.show();
     result_frame.show();
-    result_vbox.show();
     result_lbl.show();
+    variables_space.show();
+    variables_frame.hide(); // variables frame is initially hidden
+    variables_scroller.show();
+    variables_lbl.show();
     in_out_info_hbox.show();
     in_info_lbl.show();
     out_info_lbl.show();
@@ -337,18 +351,34 @@ auto main_window::on_settings_btn_clicked() -> void {
 }
 
 auto main_window::on_variables_btn_clicked() -> void {
-    if (variables_win)
-        variables_win->present();
-    else {
-        variables_win = std::make_unique<variables_window>();
-        variables_win->signal_hide().connect(sigc::bind(sigc::mem_fun(*this, &main_window::on_client_hide), variables_win.get()), false);
-
-        variables_win->show(); // show needs to be called before set otherwise
-        // content will inexplicably be selected and cursor will be visible. see
-        // also variables_window::set. sigh!
-
-        variables_win->set(parser.variables_begin(), parser.variables_end(), out_options);
+    if (variables_frame.get_visible()) {
+        variables_frame.hide();
+        variables_lbl.set_label(Glib::ustring());
+        resize(1, 1); // actually, resizes to minimum width/height
+    } else {
+        variables_frame.show();
+        display_variables();
     }
+}
+
+auto main_window::display_variables() -> void {
+    auto begin = parser.variables_begin();
+    auto end = parser.variables_end();
+
+    if (begin == end) {
+        variables_lbl.set_label("No variables are defined.");
+        return;
+    }
+
+    std::stringstream buf;
+    for (auto itr = begin; itr != end;) {
+        buf << itr->first;
+        buf << " = ";
+        buf << calc_outputter(out_options)(itr->second);
+        if (++itr != end)
+            buf << "\n";
+    }
+    variables_lbl.set_label(buf.str());
 }
 
 auto main_window::on_help_btn_clicked() -> void {
@@ -361,6 +391,7 @@ auto main_window::on_about_btn_clicked() -> void {
     else {
         about_dlg = std::make_unique<Gtk::AboutDialog>();
         about_dlg->signal_hide().connect(sigc::bind(sigc::mem_fun(*this, &main_window::on_client_hide), about_dlg.get()), false);
+        about_dlg->signal_response().connect(sigc::mem_fun(*this, &main_window::on_about_dlg_response)); // sometimes the Close button will be presented
         about_dlg->set_transient_for(*this);
 
         about_dlg->set_logo_icon_name(app_icon);
@@ -381,9 +412,17 @@ auto main_window::on_about_btn_clicked() -> void {
     expr_entry.grab_focus_without_selecting();
 }
 
+auto main_window::on_about_dlg_response(int /*response_id*/) -> void {
+    // getting non-sensical response id GTK_RESPONSE_DELETE_EVENT for close
+    // button under Manjaro KDE (expected GTK_RESPONSE_CLOSE), so default
+    // response for any case will be to simply delete the dialog (i.e., assume
+    // response_id is unreliable)
+    about_dlg.reset();
+}
+
 auto main_window::on_variables_changed() -> void {
-    if (variables_win)
-        variables_win->set(parser.variables_begin(), parser.variables_end(), out_options);
+    if (variables_frame.is_visible())
+        display_variables();
 }
 
 auto main_window::evaluate() -> void {
@@ -466,7 +505,6 @@ auto main_window::update_if_options_changed(const output_options& new_out_option
 }
 
 auto main_window::on_hide() -> void {
-    //variables_win.reset();
     //settings_win.reset();
     //about_dlg.reset();
 
@@ -481,12 +519,9 @@ auto main_window::on_hide() -> void {
     // deleting the windows caused no problem, but on_close_request is
     // unavailable in gtkmm 3
 
-    auto p_variables_win = variables_win.release();
     auto p_settings_win = settings_win.release();
     auto p_about_dlg = about_dlg.release();
 
-    if (p_variables_win)
-        p_variables_win->hide();
     if (p_settings_win)
         p_settings_win->hide();
     if (p_about_dlg)
@@ -497,9 +532,7 @@ auto main_window::on_hide() -> void {
 
 auto main_window::on_client_hide(Gtk::Window* win) -> void {
     assert(win);
-    if (win == variables_win.get())
-        variables_win.reset();
-    else if (win == settings_win.get())
+    if (win == settings_win.get())
         settings_win.reset();
     else if (win == about_dlg.get())
         about_dlg.reset();

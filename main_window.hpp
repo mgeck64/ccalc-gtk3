@@ -15,12 +15,12 @@
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/headerbar.h>
 #include <gtkmm/aboutdialog.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gdk/gdkevents.h>
 
 #include <vector>
 
 class gcalc_app;
-class variables_window;
 class settings_window;
 
 class main_window : public Gtk::Window {
@@ -46,8 +46,11 @@ private:
     Gtk::Button expr_btn;
     Gtk::Label expr_btn_lbl;
     Gtk::Frame result_frame;
-    Gtk::Box result_vbox;
     Gtk::Label result_lbl;
+    Gtk::Box variables_space;
+    Gtk::Frame variables_frame;
+    Gtk::ScrolledWindow variables_scroller;
+    Gtk::Label variables_lbl;
     Gtk::Box in_out_info_hbox;
     Gtk::Label in_info_lbl;
     Gtk::Label out_info_lbl;
@@ -86,6 +89,7 @@ private:
 
     settings_storage settings_storager;
 
+    auto display_variables() -> void;
     auto show_input_info() -> void;
     auto show_output_info() -> void;
     auto append_history(const Glib::ustring& expr_str) -> void;
@@ -98,6 +102,7 @@ private:
     auto on_variables_btn_clicked() -> void;
     auto on_help_btn_clicked() -> void;
     auto on_about_btn_clicked() -> void;
+    auto on_about_dlg_response(int response_id) -> void;
     auto on_variables_changed() -> void;
 
     parser_options parse_options;
@@ -112,7 +117,6 @@ private:
     history_list::size_type history_idx = 0;
     static constexpr history_list::size_type max_history_size = 32;
 
-    std::unique_ptr<variables_window> variables_win;
     std::unique_ptr<settings_window> settings_win;
     std::unique_ptr<Gtk::AboutDialog> about_dlg;
 

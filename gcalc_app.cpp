@@ -2,7 +2,6 @@
 #include "gcalc_basics.hpp"
 #include "main_window.hpp"
 #include "help_window.hpp"
-#include "variables_window.hpp"
 #include "settings_window.hpp"
 
 #include <glibmm/miscutils.h>
