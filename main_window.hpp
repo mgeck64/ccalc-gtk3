@@ -59,6 +59,9 @@ private:
     Gtk::MenuButton functions_b_btn;
     Gtk::Button settings_btn;
 
+    int show_variables_position = 0;
+    Glib::RefPtr<Gio::Menu> more_menu;
+
     Gtk::Menu functions_a_menu;
     Gtk::MenuItem exp_item;
     Gtk::MenuItem ln_item;
@@ -99,9 +102,9 @@ private:
     auto on_expr_btn_clicked() -> void;
     auto on_function_activate(const char* label) -> void;
     auto on_settings_btn_clicked() -> void;
-    auto on_variables_btn_clicked() -> void;
-    auto on_help_btn_clicked() -> void;
-    auto on_about_btn_clicked() -> void;
+    auto on_variables_item_clicked() -> void;
+    auto on_help_item_clicked() -> void;
+    auto on_about_item_clicked() -> void;
     auto on_about_dlg_response(int response_id) -> void;
     auto on_variables_changed() -> void;
 

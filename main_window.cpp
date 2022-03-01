@@ -44,17 +44,18 @@ main_window::main_window(gcalc_app& app_) :
         more_btn.set_tooltip_text("More");
         more_btn.set_hexpand(false);
 
-        auto more_menu = Gio::Menu::create();
+        more_menu = Gio::Menu::create();
         more_btn.set_menu_model(more_menu);
 
-        more_action_group->add_action("variables", sigc::mem_fun(*this, &main_window::on_variables_btn_clicked));
-        more_menu->append("Variables", "more.variables");
+        more_action_group->add_action("variables", sigc::mem_fun(*this, &main_window::on_variables_item_clicked));
+        more_menu->append("Show Variables", "more.variables");
+        show_variables_position = 0;
 
-        more_action_group->add_action("help", sigc::mem_fun(*this, &main_window::on_help_btn_clicked));
+        more_action_group->add_action("help", sigc::mem_fun(*this, &main_window::on_help_item_clicked));
         more_menu->append("Help", "more.help");
         app.set_accel_for_action("more.help", "F1");
 
-        more_action_group->add_action("about", sigc::mem_fun(*this, &main_window::on_about_btn_clicked));
+        more_action_group->add_action("about", sigc::mem_fun(*this, &main_window::on_about_item_clicked));
         more_menu->append("About", "more.about");
 
         more_btn.show();
@@ -350,14 +351,22 @@ auto main_window::on_settings_btn_clicked() -> void {
     }
 }
 
-auto main_window::on_variables_btn_clicked() -> void {
+auto main_window::on_variables_item_clicked() -> void {
     if (variables_frame.get_visible()) {
         variables_frame.hide();
         variables_lbl.set_label(Glib::ustring());
+        if (more_menu) {
+            more_menu->remove(show_variables_position);
+            more_menu->insert(show_variables_position, "Show Variables", "more.variables");
+        }
         resize(1, 1); // actually, resizes to minimum width/height
     } else {
         variables_frame.show();
         display_variables();
+        if (more_menu) {
+            more_menu->remove(show_variables_position);
+            more_menu->insert(show_variables_position, "Hide Variables", "more.variables");
+        }
     }
 }
 
@@ -381,11 +390,11 @@ auto main_window::display_variables() -> void {
     variables_lbl.set_label(buf.str());
 }
 
-auto main_window::on_help_btn_clicked() -> void {
+auto main_window::on_help_item_clicked() -> void {
     app.help(this, help_window::quick_start_idx, false);
 }
 
-auto main_window::on_about_btn_clicked() -> void {
+auto main_window::on_about_item_clicked() -> void {
     if (about_dlg)
         about_dlg->present();
     else {
@@ -437,7 +446,7 @@ auto main_window::evaluate() -> void {
     try {
         auto result = parser.evaluate(
             std::string_view(expr_str.data(), expr_str.size()),
-            std::bind(&main_window::on_help_btn_clicked, this),
+            std::bind(&main_window::on_help_item_clicked, this),
             new_out_options,
             std::bind(&main_window::on_variables_changed, this));
         std::ostringstream out;
