@@ -1,5 +1,5 @@
-PREFIX = /usr
-BOOST_PREFIX = $(PREFIX)/local
+PREFIX = /usr/local
+BOOST_PREFIX = $(PREFIX)
 
 #
 # Compiler flags
